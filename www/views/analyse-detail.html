@@ -1,0 +1,102 @@
+<div class="container">
+  <div class="row">
+    <div class="col-8 main-block" ng-if="user.id">
+
+        <h2>Analyse du {{ j.journeescf_date | date : "dd/MM"}} </h2>
+        
+        <p> Répondez, pour chaque tache ou interruption, aux questions posées, et enregistrez vos réponses. Lorsque toutes les taches auront eu une réponse vous pourrez alors valider votre journée. Une fois une journée validée, plus aucune donnée ne peut être modifiée.</p>
+        
+<div ng-show="modalInter.ouvert" class="modalInter" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modifier une les heures de début et de fin</h4>
+      </div>
+      <div class="modal-body">
+        Début : <select ng-model="modalInter.debut.h">
+            <option ng-repeat="n in range(0,23)" value="{{n}}">{{n}}</li>
+        </select>H
+       <select ng-model="modalInter.debut.min">
+            <option ng-repeat="n in range(0,59)" value="{{n}}">{{n}}</li>
+        </select><br />
+      Fin : <select ng-model="modalInter.fin.h">
+            <option ng-repeat="n in range(0,23)" value="{{n}}">{{n}}</li>
+        </select>H
+       <select ng-model="modalInter.fin.min">
+            <option ng-repeat="n in range(0,59)" value="{{n}}">{{n}}</li>
+        </select>
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modalInter">Fermer</button>
+        <button type="button" class="btn btn-primary" ng-click="modalInter.save()" ng-hide="modalInter.debut.h > modalInter.fin.h || (modalInter.debut.h == modalInter.fin.h && modalInter.debut.min > modalInter.fin.min)">Sauvegarder</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+        
+        
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  
+  <div ng-repeat="t in taches track by $index" class="panel panel-default {{ t.tachescf_label }}" ng-if="t.tachescf_name_tache != 'IntEclair'">
+    <div class="panel-heading" role="tab" id="heading{{ t.tachescf_id }}">
+      <h3 class="panel-title">
+        <!-- <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{ t.tachescf_id }}" aria-expanded="false" aria-controls="collapse{{ t.tachescf_id }}" ng-if="t.tachescf_label == 'interruption' || t.tachescf_label == 'tache'">
+           {{ t.tachescf_name_tache}} de {{ t.tachescf_debut | date : "H:mm" }} à {{ t.tachescf_fin  | date : "H:mm" }}
+        </a> 
+          <span ng-if="t.tachescf_label != 'interruption' && t.tachescf_label != 'tache'"> {{ t.tachescf_label}} de {{ t.tachescf_debut | date : "H:mm" }} à {{ t.tachescf_fin  | date : "H:mm" }}</span>
+          -->
+          
+          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{ t.tachescf_id }}" aria-expanded="false" aria-controls="collapse{{ t.tachescf_id }}" ng-if="t.tachescf_label == 'tache'">
+           {{ t.tachescf_name_tache}} de {{ t.tachescf_debut | date : "H:mm" }} à {{ t.tachescf_fin  | date : "H:mm" }}
+        </a>
+          <span ng-if="t.tachescf_label == 'interruption'" ng-click="modalInter.open(t.tachescf_id, t.tachescf_debut, t.tachescf_fin)"> {{ t.tachescf_label}} de {{ t.tachescf_debut | date : "H:mm" }} à {{ t.tachescf_fin  | date : "H:mm" }}</span>
+          <span ng-if="t.tachescf_label != 'tache' && t.tachescf_label != 'interruption'"> {{ t.tachescf_label}} de {{ t.tachescf_debut | date : "H:mm" }} à {{ t.tachescf_fin  | date : "H:mm" }}</span>
+          
+      </h3>
+    </div>
+    <div id="collapse{{ t.tachescf_id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ t.tachescf_id }}" ng-if="t.tachescf_label == 'interruption' || t.tachescf_label == 'tache'">
+      <div class="panel-body">
+           <div><input type="submit" class="btn btn-primary" ng-click="modalInter.open(t.tachescf_id, t.tachescf_debut, t.tachescf_fin)" value="Editer les heures de début/fin" /></div>
+          
+          <div ng-if="t.tachescf_notes != ''">
+            Vous avez écrit la note suivante : <br />
+                <textarea class="textarea form-control">{{t.tachescf_notes}}</textarea>
+          </div>
+          
+          <form class="form">
+            
+              <div class="row">
+              <div ng-repeat="q in questions track by $index" ng-init="indexq=$index" class="question col-md-4" ng-hide='t.tachescf_label == "interruption" && ($index==2 || $index==3)'>
+                  <h4>Q{{$index+1}}. {{q.titre}}</h4>
+                
+                  <div ng-repeat="r in q.rep track by $index" ng-if="r != 0">
+                      <input name="rep[{{t.tachescf_id}}][{{indexq}}]" ng-model="$parent.$parent.$parent.rep[t.tachescf_id][indexq]" id="rep[{{t.tachescf_id}}][{{indexq}}][{{$index}}]" type="radio" ng-value="{{$index}}" >           
+                      <label for="rep[{{t.tachescf_id}}][{{indexq}}][{{$index}}]">{{ r }}</label>
+                  </div>
+                 
+              </div>
+                  </div>
+                
+              
+                <div><input type="submit" class="btn btn-primary" ng-click="check(t, rep)" value="Enregistrer" /></div>
+          </form>
+          
+          
+      </div>
+    </div>
+  </div>
+</div>
+      
+<input type="submit"  ng-show="journee_ok" ng-click="confirmDay(j.journeescf_id)" value="Valider la journée" />
+<p ng-hide="journee_ok" class="text-right"><i>Le bouton pour valider la journée apparaîtra lorsque vous aurez enregistré toutes vos tâches.</i></p>
+        
+    </div>
+      
+      <div class="col-12 main-block" ng-if="!user.id">
+
+        Vous n'avez pas accès à cette page.
+    </div>
+  </div>
+</div><!-- /.container -->

@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="row">
+    <div class="col-8 main-block" ng-if="user.id">
+
+        <h2>Journées à analyser</h2>
+        <p>Vous trouverez ci-dessous les journées que vous avez envoyé via l'application mobile bsTIME. En cliquant sur une journée prête pour l'analyse, vous aurez la possibilité de commencer celle-ci.</p>
+        
+        <div ng-repeat="j in jours" class="ana-line etat{{ j.journeescf_etat }}"  ng-if="j.journeescf_etat < 4 ">
+            <h3 class="pull-left">{{ j.journeescf_date | date : "dd/MM/y"}}</h3>
+            <div class="pull-right" ng-if="j.journeescf_etat < 3">Bientôt disponible</div>
+            <div class="pull-right" ng-if="j.journeescf_etat > 2"><a href="#/analyse/{{j.journeescf_id}}">Commencer l'analyse</a></div>
+        </div>
+
+        
+        <h2>Journées analysées</h2>
+        
+        <div class="bg-default ana-line etat4" ng-repeat="j in jours" ng-if="j.journeescf_etat > 3 ">
+            <h3 class="pull-left">{{ j.journeescf_date | date : "dd/MM/y" }}</h3>
+            <div class="pull-right" ng-if="j.journeescf_etat == 8">Journée annulée</div>
+            <div class="pull-right" ng-if="j.journeescf_etat == 4">Journée validée</div>
+            <div class="pull-right" ng-if="j.journeescf_etat == 9">Journée démo</div>
+        </div>
+        
+        <h2>Annuler une journée</h2>
+        <p>Si, pour une raison quelconque (erreurs de saisie, imprévu majeur...), vous tenez à ce qu'une journée ajoutée à votre profil ne soit pas prise en compte, vous pouvez l'annuler. <strong>Cette action est irréversible.</strong></p>
+        
+        <div class="row">
+            <div class="col-6 col-md-6">
+                <select class="form-control" ng-hide="jokers == 0" ng-model="annul">
+                    <option ng-repeat="j in jours" ng-value="j.journeescf_id" ng-if="j.journeescf_etat < 4">{{ j.journeescf_date | date : 'dd/MM/y' }}</option>
+                </select>
+            </div>
+            <div class="col-6 col-md-6" ng-hide="jokers == 0"><span class="btn btn-danger" ng-click="annuler(annul)">Annuler</span></div>
+        </div>
+        <p><i>Vous pouvez encore annuler {{jokers}} journées.</i></p>
+
+    </div>
+      
+      <div class="col-12 main-block" ng-if="!user.id">
+
+        Vous n'avez pas accès à cette page.
+    </div>
+  </div>
+</div><!-- /.container -->

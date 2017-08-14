@@ -1,0 +1,188 @@
+@import (less) "../node_modules/lesshat/build/lesshat.less";
+
+@bleu : #0DB3C3;
+@bleu-darker : #1D9798;
+@gris : #B7B7B7;
+@orange : #F5A51B;
+
+body {
+    padding-top: 50px;
+    background: #F0F0F0;
+    font-family: Calibri, Verdana, sans-serif;
+}
+.starter-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+
+.navbar {
+    background: white;
+    a {
+        color: @gris; 
+        text-transform: uppercase;
+    }
+    .icon-bar {
+        background: @bleu;
+    }
+}
+.navbar-brand {
+    img { margin-top: -10px; width: 70px; background: white; border-radius: 70px;}
+}
+
+.logo {
+    text-align: center;
+    img { width: 250px; margin-bottom: -90px; transition: 300ms;
+        &:hover { transform: rotate(-45deg); margin-bottom: -50px; }
+    }
+}
+.main-block {
+    background: white;
+    margin-top: 30px; 
+    padding: 20px; 
+    box-shadow: 1px 1px 6px gray; 
+    
+}
+
+.btn {
+    border-radius: 0;
+    border: 0;
+}
+.bg-primary, .btn-primary { background: @bleu; }
+.bg-default, .btn-default { background: @gris; color: white; text-shadow:none; }
+.btn-primary, .btn-default {
+    
+    &:hover {
+        background: @bleu-darker; 
+        color: white;
+    }
+}
+
+.ana-line {
+    color: white;
+    padding: 5px; 
+    overflow: hidden;
+    text-transform: uppercase;
+    margin-top: 5px;
+    a { color: white; }
+    &.etat3 { background: @bleu; }
+    &.etat2 { background: @gris; }
+    &.etat4 { background: @bleu-darker; }
+    &.etat9 { background: @orange; }
+    h3 {
+        font-size: 15px;
+        padding: 0;
+        margin: 0;
+    }
+   
+    
+}
+
+ .question {
+        padding-bottom: 10px; 
+    }
+
+.bs-badge {
+   width: 150px; 
+    transition: 300ms; 
+    &:not(.unlocked) { 
+        opacity: 0.4; 
+        &:hover { 
+            opacity: 0.5; 
+            -webkit-filter: grayscale(100%) blur(0px); /* Safari 6.0 - 9.0 */
+        filter: grayscale(100%) blur(0px);
+        }
+         -webkit-filter: grayscale(100%) blur(3px); /* Safari 6.0 - 9.0 */
+        filter: grayscale(100%) blur(3px);
+    }
+    &.unlocked{
+        
+        &:hover {
+            transform: scale(1.1);}
+    }
+}
+
+.panel-heading a:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+    float: right;        /* adjust as needed */
+    color: white;         /* adjust as needed */
+}
+.panel-heading a.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+}
+
+.panel-title { 
+    color: white; 
+    text-transform: capitalize;
+}
+.panel.tache {
+    .panel-heading { background: @bleu; }  
+}
+.panel.interruption {
+   // .panel-heading { background: @orange; }  
+    .panel-heading { background: @gris; }  
+}
+.panel.deplacement, .panel.pause {
+    .panel-heading { background: @gris; } 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Have to set height explicity on ui-view
+to prevent collapsing during animation*/
+[ui-view]{
+ height: 65px;
+}
+
+.ui-view-container {
+  position: relative;
+}
+
+[ui-view].ng-enter, [ui-view].ng-leave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  -webkit-transition:all .5s ease-in-out;
+    -moz-transition:all .5s ease-in-out;
+    -o-transition:all .5s ease-in-out;
+    transition:all .5s ease-in-out;
+}
+
+[ui-view].ng-enter {
+  opacity: 0;
+  -webkit-transform:scale3d(0.5, 0.5, 0.5);
+  -moz-transform:scale3d(0.5, 0.5, 0.5);
+  transform:scale3d(0.5, 0.5, 0.5);
+}
+
+[ui-view].ng-enter-active {
+  opacity: 1;
+  -webkit-transform:scale3d(1, 1, 1);
+  -moz-transform:scale3d(1, 1, 1);
+  transform:scale3d(1, 1, 1);
+}
+
+[ui-view].ng-leave {
+  opacity: 1;
+  -webkit-transform:translate3d(0, 0, 0);
+  -moz-transform:translate3d(0, 0, 0);
+  transform:translate3d(0, 0, 0);
+}
+
+[ui-view].ng-leave-active {
+  opacity: 0;
+  -webkit-transform:translate3d(100px, 0, 0);
+  -moz-transform:translate3d(100px, 0, 0);
+  transform:translate3d(100px, 0, 0);
+}

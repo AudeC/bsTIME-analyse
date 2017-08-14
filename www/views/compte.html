@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="row">
+    <div class="col-8 main-block" ng-if="user.id">
+
+           <h2>Badges</h2>
+     
+        <div ng-hide="badgesloaded">
+            Chargement en cours...
+        </div>
+        <div ng-show="badgesloaded" ng-repeat="(nom,cat) in badges">
+            <h3>{{ catNames[nom] }} <span class="label label-primary">{{ (countBadges(nom)/cat.length)*100 }}%</span></h3>
+            <span ng-repeat="b in cat">
+                <img src="img/badges/{{b.img}}" data-html="true" data-toggle="tooltip" title="{{ b.nom }}" ng-if="b.is_unlocked" class="bs-badge unlocked"  onmouseenter="$(this).tooltip('show')" />
+                <img src="img/badges/{{b.img}}" data-html="true" data-toggle="tooltip" title="{{ b.nom }}" ng-if="!b.is_unlocked" class="bs-badge"  onmouseenter="$(this).tooltip('show')" />
+            </span>
+        </div>
+         
+        
+        
+        <h2>Compte</h2>
+        
+            <form class="form">
+              <div class="form-group">
+                <label for="u-nom" class="control-label">Nom entier</label>
+                  <input type="text" value="{{ user.nom }}" class="form-control" id="u-nom" disabled>
+                </div><div class="form-group">
+                <label for="u-entr" class="control-label">Entreprise</label>
+                  <input type="text" value="{{ user.nom_entr }}" class="form-control" id="u-entr" disabled>
+                 </div><div class="form-group">
+                <label for="u-mail" class="control-label">Adresse e-mail</label>
+                  <input type="text" ng-model="user.email" class="form-control" id="u-mail">
+                 </div><div class="form-group">
+                <label for="u-tel" class="control-label">Téléphone</label>
+                  <input type="text" ng-model="user.tel" class="form-control" id="u-tel" >
+                 </div><div class="form-group">
+                    <input type="submit" class="btn btn-primary" ng-click="updateUser(user.email, user.tel)" value="Mettre à jour" />
+                </div>
+            </form>
+
+            <h2>Modifier votre mot de passe</h2>
+            <p>Vous pouvez redéfinir votre mot de passe ici, en veillant à éviter toute chaîne de caractère trop simple comme 1234, {{ user.pseudo }}... Le bouton pour confirmer apparaîtra lorsque la confirmation du mot de passe sera identique au nouveau mot de passe, et lorsqu'il comportera au moins 6 caractères (par mesure de sécurité)</p>
+            <form class="form">
+              <div class="form-group">
+                <label for="u-nom" class="control-label">Nouveau mot de passe</label>
+                <input type="password" ng-model="new_mdp.val" class="form-control" id="u-nom">
+              </div>
+             <div class="form-group">
+                <label for="u-mdp2" class="control-label">Confirmation</label>
+                  <input type="password" ng-model="new_mdp.conf" class="form-control" id="u-mdp2" >
+              </div>
+                <div class="form-group">
+                      <input type="submit" ng-if="(new_mdp.val.length > 5) && new_mdp.val == new_mdp.conf" class="btn btn-primary" ng-click="updatePassword(new_mdp)" value="Confirmer" />
+                </div>
+                
+            
+            </form>
+      
+    </div>
+ </div>
+      
+      <div class="col-12 main-block" ng-if="!user.id">
+
+        Vous n'avez pas accès à cette page.
+    </div>
+  </div>
+</div><!-- /.container -->
